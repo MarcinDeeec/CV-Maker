@@ -48,16 +48,38 @@ export interface MatchResult {
 
 export type ChangeSource = "cv" | "job" | "ai"
 
-export interface SuggestedChange {
-  type: "add" | "emphasize" | "reorder" | "rewrite"
-  description: string
+/** Skąd pochodzi sugestia — do pokazania użytkownikowi (evidence mapping). */
+export interface Evidence {
+  origin: "cv" | "job"
+  label: string
+  excerpt: string
+}
+
+/** Pojedyncza, przełączalna sugestia (review-first). */
+export interface Suggestion {
+  id: string
+  type: "reorderSkills" | "tailorSummary" | "noteMissingHard"
+  title: string
+  detail: string
   source: ChangeSource
+  evidence?: Evidence
+  accepted: boolean
 }
 
 export interface TailoredCv {
   markdown: string
-  changes: SuggestedChange[]
+  suggestions: Suggestion[]
   match: MatchResult
+  /** true, gdy treść pochodzi z modelu AI — wtedy przełączniki sugestii są nieaktywne. */
+  aiGenerated?: boolean
+}
+
+export interface SavedVersion {
+  id: string
+  name: string
+  markdown: string
+  score: number
+  createdAt: string
 }
 
 export interface StoredProject {

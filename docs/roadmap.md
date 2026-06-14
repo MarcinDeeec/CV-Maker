@@ -15,10 +15,10 @@
 - ✅ eksport do PDF (przez druk przeglądarki, bez zależności)
 - ✅ README po angielsku (+ README.pl.md)
 
-## v0.3 — tryb review-first
-- akceptowanie / odrzucanie pojedynczych sugestii
-- evidence mapping (z którego fragmentu CV pochodzi sugestia)
-- wiele zapisanych wersji CV
+## v0.3 — tryb review-first  ✅
+- ✅ akceptowanie / odrzucanie pojedynczych sugestii (CV przekomponowuje się na bieżąco)
+- ✅ evidence mapping (z którego fragmentu CV / oferty pochodzi sugestia)
+- ✅ wiele zapisanych wersji CV (zapis / wczytanie / usuwanie, lokalnie)
 
 ## v0.5 — pierwszy wygodny release
 - import DOCX

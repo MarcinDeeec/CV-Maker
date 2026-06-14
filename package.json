@@ -1,7 +1,7 @@
 {
   "name": "cv-tailor-local",
   "private": true,
-  "version": "0.2.0",
+  "version": "0.3.0",
   "type": "module",
   "description": "Local-first, privacy-first aplikacja do dopasowywania CV pod oferty pracy (BYOK AI).",
   "scripts": {
