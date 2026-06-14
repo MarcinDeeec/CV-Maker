@@ -31,8 +31,9 @@ test("normalize: usuwa dekomponowalne znaki diakrytyczne i zmienia na małe lite
   // NFD rozkłada większość znaków (é, ó, ź, ć), więc znikają one ze stringa.
   assert.equal(normalize("RÉSUMÉ Ćma"), "resume cma")
   assert.equal(stripDiacritics("żarówka"), "zarowka")
-  // Uwaga/ograniczenie: "ł" nie jest dekomponowalne w NFD i pozostaje bez zmian.
-  assert.equal(normalize("Łódź"), "łodz")
+  // v1.0: "ł" jest mapowane ręcznie (NFD go nie rozkłada).
+  assert.equal(normalize("Łódź"), "lodz")
+  assert.equal(stripDiacritics("Łukasz"), "Lukasz")
 })
 
 test("unique: usuwa duplikaty z zachowaniem kolejności", () => {

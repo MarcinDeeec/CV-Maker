@@ -33,8 +33,8 @@
 - ✅ opcjonalny tryb listu motywacyjnego (heurystyka offline + wariant AI, 3 tony, eksport MD)
 - ✅ testy jednostkowe rdzenia (wbudowany runner Node, `npm test`, 13 testów)
 
-## v1.0 — release stabilny
-- dopracowany lokalny workspace
-- desktop build (Tauri)
-- opcjonalne wsparcie LocalAI
-- pełna dokumentacja + czytelny model licencyjny
+## v1.0 — release stabilny  (w toku)
+- ✅ opcjonalne wsparcie LocalAI/Ollama bez klucza API (lokalne modele, warunkowy nagłówek Authorization)
+- ✅ dopracowany workspace (mapowanie "ł→l" w normalizacji, odznaka "AI: lokalne", wersja v1.0)
+- ✅ pełna dokumentacja (architecture / usage / contributing) + czytelny model licencyjny (MIT)
+- ⏳ desktop build (Tauri) — kolejny krok (wymaga toolchainu Rust, budowany lokalnie)

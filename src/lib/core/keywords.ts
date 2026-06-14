@@ -28,8 +28,22 @@ export const TECH_TERMS: string[] = [
 
 export const unique = <T,>(arr: T[]): T[] => [...new Set(arr)]
 
+// Znaki nie-dekomponowalne przez NFD (np. polskie "ł") mapujemy ręcznie.
+const NON_DECOMPOSABLE: Record<string, string> = {
+  "ł": "l",
+  "Ł": "L",
+  "đ": "d",
+  "Đ": "D",
+  "ø": "o",
+  "Ø": "O",
+  "ß": "ss",
+}
+
 export function stripDiacritics(s: string): string {
-  return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+  return s
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[\u0142\u0141\u0111\u0110\u00f8\u00d8\u00df]/g, (ch) => NON_DECOMPOSABLE[ch] ?? ch)
 }
 
 /** Lowercase + bez polskich znaków, żeby dopasowanie było odporne na ogonki. */

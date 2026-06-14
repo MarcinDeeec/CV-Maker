@@ -20,7 +20,7 @@ import type {
   SavedVersion,
   ProjectSnapshot,
 } from "@/lib/core/types"
-import { type AiConfig, DEFAULT_AI_CONFIG } from "@/lib/ai/config"
+import { type AiConfig, DEFAULT_AI_CONFIG, isAiConfigured } from "@/lib/ai/config"
 import { generateWithAi, generateCoverLetterWithAi } from "@/lib/ai/client"
 import { translate, type Lang } from "@/lib/i18n/translations"
 import {
@@ -122,7 +122,7 @@ export function ProjectProvider({ children }: { children: ReactNode }) {
     setError(null)
     try {
       const base = generateTailoredCv(parsedCv, jobReq, match)
-      if (aiConfig.apiKey.trim()) {
+      if (isAiConfigured(aiConfig)) {
         try {
           const ai = await generateWithAi(cvText, jobText, aiConfig)
           setTailored({ ...base, markdown: ai.markdown, aiGenerated: true })
@@ -247,7 +247,7 @@ export function ProjectProvider({ children }: { children: ReactNode }) {
       setError(null)
       try {
         const base = generateCoverLetter(parsedCv, jobReq, match, { tone, lang })
-        if (aiConfig.apiKey.trim()) {
+        if (isAiConfigured(aiConfig)) {
           try {
             const ai = await generateCoverLetterWithAi(cvText, jobText, aiConfig, { tone, lang })
             setCoverLetterState(ai.markdown)

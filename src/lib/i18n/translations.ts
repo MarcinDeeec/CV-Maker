@@ -22,6 +22,7 @@ const pl: Dict = {
 
   "header.ai_on": "AI: włączone",
   "header.ai_off": "AI: tryb offline",
+  "header.ai_local": "AI: lokalne",
   "header.footer": "Dane zostają lokalnie w Twojej przeglądarce · BYOK",
 
   "step.start": "1. Start",
@@ -99,6 +100,7 @@ const pl: Dict = {
   "settings.model": "Model",
   "settings.api_key": "Klucz API",
   "settings.api_key_ph": "sk-... (zostaje lokalnie)",
+  "settings.api_key_optional": "Klucz opcjonalny dla lokalnego modelu (LocalAI/Ollama).",
   "settings.language": "Język interfejsu",
 
   "cover.title": "List motywacyjny",
@@ -128,6 +130,7 @@ const en: Dict = {
 
   "header.ai_on": "AI: on",
   "header.ai_off": "AI: offline mode",
+  "header.ai_local": "AI: local",
   "header.footer": "Your data stays locally in your browser · BYOK",
 
   "step.start": "1. Start",
@@ -205,6 +208,7 @@ const en: Dict = {
   "settings.model": "Model",
   "settings.api_key": "API key",
   "settings.api_key_ph": "sk-... (stays local)",
+  "settings.api_key_optional": "Key optional for a local model (LocalAI/Ollama).",
   "settings.language": "Interface language",
 
   "cover.title": "Cover letter",

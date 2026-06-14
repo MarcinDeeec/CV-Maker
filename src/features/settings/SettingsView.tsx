@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useProject } from "@/state/useProject"
-import { type AiConfig, PROVIDER_PRESETS, findPreset } from "@/lib/ai/config"
+import { type AiConfig, PROVIDER_PRESETS, findPreset, providerRequiresKey } from "@/lib/ai/config"
 import { LANGS } from "@/lib/i18n/translations"
 
 export function SettingsView() {
@@ -28,6 +28,7 @@ export function SettingsView() {
   }
 
   const isCustom = (draft.provider ?? "custom") === "custom"
+  const keyOptional = !providerRequiresKey(draft)
 
   return (
     <section className="view">
@@ -78,6 +79,7 @@ export function SettingsView() {
           onChange={(e) => set({ apiKey: e.target.value })}
           placeholder={t("settings.api_key_ph")}
         />
+        {keyOptional && <span className="file-status">{t("settings.api_key_optional")}</span>}
       </div>
 
       <div className="actions">

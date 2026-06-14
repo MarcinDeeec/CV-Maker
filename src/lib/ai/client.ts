@@ -1,4 +1,4 @@
-import type { AiConfig } from "./config"
+import { type AiConfig, isAiConfigured } from "./config"
 import type { CoverTone, CoverLang } from "../core/tailoring/coverLetter"
 
 // Strażnik jakości: model ma przepisywać, a nie zmyślać.
@@ -84,17 +84,20 @@ function friendlyHttpError(status: number, detail: string): string {
 
 /** Wspólne wywołanie chat-completions (OpenAI-compatible). */
 async function callChat(config: AiConfig, system: string, user: string): Promise<string> {
-  if (!config.apiKey.trim()) throw new Error("Brak klucza API")
-  if (!config.baseUrl.trim()) throw new Error("Brak adresu endpointu (Ustawienia).")
+  if (!isAiConfigured(config))
+    throw new Error(
+      "AI nie jest skonfigurowane (Ustawienia: endpoint, model, a dla chmury także klucz API).",
+    )
+
+  const headers: Record<string, string> = { "Content-Type": "application/json" }
+  // Lokalne modele (LocalAI/Ollama) zwykle nie wymagają klucza — nagłówek dodajemy tylko gdy jest.
+  if (config.apiKey.trim()) headers.Authorization = `Bearer ${config.apiKey}`
 
   let res: Response
   try {
     res = await fetch(`${config.baseUrl.replace(/\/$/, "")}/chat/completions`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${config.apiKey}`,
-      },
+      headers,
       body: JSON.stringify({
         model: config.model,
         temperature: 0.3,
