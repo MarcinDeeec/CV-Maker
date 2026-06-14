@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useProject } from "@/state/useProject"
 import { downloadMarkdown } from "@/lib/export/markdown"
-import { exportPdf } from "@/lib/export/pdf"
+import { exportPdf, PDF_LAYOUTS, type PdfLayout } from "@/lib/export/pdf"
 
 export function ResultView() {
   const {
@@ -18,6 +18,7 @@ export function ResultView() {
   } = useProject()
   const [openEvidence, setOpenEvidence] = useState<string | null>(null)
   const [versionName, setVersionName] = useState("")
+  const [pdfLayout, setPdfLayout] = useState<PdfLayout>("classic")
 
   if (!tailored) {
     return (
@@ -81,7 +82,7 @@ export function ResultView() {
                     >
                       {openEvidence === s.id
                         ? "Ukryj źródło"
-                        : `Pokaz źródło (${s.evidence.origin === "cv" ? "z CV" : "z oferty"})`}
+                        : `Pokaż źródło (${s.evidence.origin === "cv" ? "z CV" : "z oferty"})`}
                     </button>
                     {openEvidence === s.id && (
                       <blockquote className="evidence">
@@ -153,10 +154,20 @@ export function ResultView() {
         >
           Eksport Markdown
         </button>
+        <span className="inline-field">
+          <label className="small">Layout PDF:</label>
+          <select value={pdfLayout} onChange={(e) => setPdfLayout(e.target.value as PdfLayout)}>
+            {PDF_LAYOUTS.map((l) => (
+              <option key={l.id} value={l.id}>
+                {l.label}
+              </option>
+            ))}
+          </select>
+        </span>
         <button
           className="btn btn--primary"
           disabled={generating}
-          onClick={() => exportPdf(tailored.markdown)}
+          onClick={() => exportPdf(tailored.markdown, pdfLayout)}
         >
           Eksport PDF
         </button>

@@ -23,9 +23,22 @@ export function buildUserPrompt(cvText: string, jobText: string): string {
   ].join("\n")
 }
 
+/** Zamienia kod HTTP na czytelną wskazówkę dla użytkownika. */
+function friendlyHttpError(status: number, detail: string): string {
+  const tail = detail ? ` — ${detail.slice(0, 120)}` : ""
+  if (status === 401 || status === 403)
+    return `Klucz API odrzucony lub brak uprawnień (HTTP ${status}). Sprawdź klucz w Ustawieniach.`
+  if (status === 404)
+    return `Nie znaleziono endpointu lub modelu (HTTP 404). Sprawdź adres i nazwę modelu.${tail}`
+  if (status === 429) return `Przekroczony limit zapytań (HTTP 429). Spróbuj ponownie za chwilę.`
+  if (status >= 500) return `Błąd po stronie dostawcy AI (HTTP ${status}). Spróbuj później.${tail}`
+  return `HTTP ${status}${tail}`
+}
+
 /**
  * Wywołanie dowolnego endpointu zgodnego z OpenAI API (chat completions).
- * Działa z OpenAI, ale też z lokalnymi silnikami typu LocalAI/Ollama-compat.
+ * Działa z OpenAI, Groq, OpenRouter, Together, Mistral, a także z lokalnymi
+ * silnikami typu LocalAI/Ollama-compat.
  */
 export async function generateWithAi(
   cvText: string,
@@ -33,26 +46,32 @@ export async function generateWithAi(
   config: AiConfig,
 ): Promise<{ markdown: string }> {
   if (!config.apiKey.trim()) throw new Error("Brak klucza API")
+  if (!config.baseUrl.trim()) throw new Error("Brak adresu endpointu (Ustawienia).")
 
-  const res = await fetch(`${config.baseUrl.replace(/\/$/, "")}/chat/completions`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${config.apiKey}`,
-    },
-    body: JSON.stringify({
-      model: config.model,
-      temperature: 0.3,
-      messages: [
-        { role: "system", content: SYSTEM_PROMPT },
-        { role: "user", content: buildUserPrompt(cvText, jobText) },
-      ],
-    }),
-  })
+  let res: Response
+  try {
+    res = await fetch(`${config.baseUrl.replace(/\/$/, "")}/chat/completions`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${config.apiKey}`,
+      },
+      body: JSON.stringify({
+        model: config.model,
+        temperature: 0.3,
+        messages: [
+          { role: "system", content: SYSTEM_PROMPT },
+          { role: "user", content: buildUserPrompt(cvText, jobText) },
+        ],
+      }),
+    })
+  } catch {
+    throw new Error("Nie udało się połączyć z endpointem AI. Sprawdź adres URL i połączenie sieciowe.")
+  }
 
   if (!res.ok) {
     const detail = await res.text().catch(() => "")
-    throw new Error(`HTTP ${res.status} ${detail.slice(0, 120)}`)
+    throw new Error(friendlyHttpError(res.status, detail))
   }
 
   const data = (await res.json()) as {

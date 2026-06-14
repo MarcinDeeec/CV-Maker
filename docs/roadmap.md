@@ -20,11 +20,11 @@
 - ✅ evidence mapping (z którego fragmentu CV / oferty pochodzi sugestia)
 - ✅ wiele zapisanych wersji CV (zapis / wczytanie / usuwanie, lokalnie)
 
-## v0.5 — pierwszy wygodny release
-- import DOCX
-- kilka layoutów eksportu PDF
-- obsługa wielu providerów OpenAI-compatible
-- lepszy UX i komunikaty błędów
+## v0.5 — pierwszy wygodny release  ✅
+- ✅ import DOCX (bezzależnościowy, natywny DecompressionStream przeglądarki)
+- ✅ kilka layoutów eksportu PDF (klasyczny / kompaktowy / nowoczesny)
+- ✅ obsługa wielu providerów OpenAI-compatible (presety: OpenAI, Groq, OpenRouter, Together, Mistral, LocalAI)
+- ✅ lepszy UX i czytelne komunikaty błędów (walidacja pliku, mapowanie błędów HTTP)
 
 ## v0.7 — wersja półstabilna
 - PL/EN w interfejsie

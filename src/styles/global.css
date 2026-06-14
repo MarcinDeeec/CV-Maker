@@ -54,6 +54,7 @@ h1 { margin-top: 0; }
 .small { font-size: 12px; }
 .block { display: block; }
 .label-gap { margin-top: 12px; }
+.file-status { font-size: 12px; color: var(--ok); margin: 4px 0 0; }
 
 .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 20px 0; }
 .card { background: var(--panel-2); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
@@ -66,12 +67,17 @@ h1 { margin-top: 0; }
 .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
 .field__head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 label { font-size: 13px; color: var(--muted); }
-textarea, input {
+textarea, input, select {
   width: 100%; background: var(--bg); color: var(--text);
   border: 1px solid var(--border); border-radius: 8px; padding: 10px;
   font-family: inherit; font-size: 14px; resize: vertical;
 }
+select { width: auto; resize: none; cursor: pointer; }
 textarea { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; line-height: 1.5; }
+input:disabled, select:disabled { opacity: .6; cursor: not-allowed; }
+
+.inline-field { display: inline-flex; align-items: center; gap: 6px; }
+.inline-field label { white-space: nowrap; }
 
 .panel { background: var(--panel-2); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 16px; }
 .panel h3 { margin-top: 0; }
