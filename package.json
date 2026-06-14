@@ -10,7 +10,10 @@
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "smoke": "tsx scripts/smoke.ts",
-    "test": "tsx --test test/core.test.ts"
+    "test": "tsx --test test/core.test.ts",
+    "tauri": "tauri",
+    "tauri:dev": "tauri dev",
+    "tauri:build": "tauri build"
   },
   "dependencies": {
     "react": "^18.3.1",
@@ -20,6 +23,7 @@
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",
+    "@tauri-apps/cli": "^2.0.0",
     "tsx": "^4.19.0",
     "typescript": "^5.5.4",
     "vite": "^5.4.2"
