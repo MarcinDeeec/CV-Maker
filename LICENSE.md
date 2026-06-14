@@ -1,12 +1,21 @@
-# Licencja
+MIT License
 
-> TODO: wybierz docelowy model licencyjny przed publikacją repozytorium.
+Copyright (c) 2026 Marcin Dec @MarcinDeeec
 
-Na etapie v0.1 projekt jest **source-available** do użytku osobistego i nauki.
-Propozycje do rozważenia:
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-- **MIT** — maksymalnie otwarcie, najprostsze dla portfolio.
-- **Apache-2.0** — otwarcie + ochrona patentowa.
-- **Source-available + COMMERCIAL.md** — jeśli chcesz zostawić sobie opcję komercyjną.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-Gdy zdecydujesz, podmień treść tego pliku na pełny tekst wybranej licencji.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
