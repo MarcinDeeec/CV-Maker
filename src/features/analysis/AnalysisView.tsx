@@ -15,34 +15,42 @@ function Chips({ items, tone }: { items: string[]; tone: "ok" | "miss" }) {
 
 function Breakdown({
   title,
+  matchedLabel,
+  gapsLabel,
   matched,
   missing,
 }: {
   title: string
+  matchedLabel: string
+  gapsLabel: string
   matched: string[]
   missing: string[]
 }) {
   return (
     <div className="panel">
       <h3>{title}</h3>
-      <p className="muted small">Pasuje ({matched.length})</p>
+      <p className="muted small">
+        {matchedLabel} ({matched.length})
+      </p>
       <Chips items={matched} tone="ok" />
-      <p className="muted small label-gap">Braki ({missing.length})</p>
+      <p className="muted small label-gap">
+        {gapsLabel} ({missing.length})
+      </p>
       <Chips items={missing} tone="miss" />
     </div>
   )
 }
 
 export function AnalysisView() {
-  const { parsedCv, jobReq, match, generate, generating, setStep } = useProject()
+  const { parsedCv, jobReq, match, generate, generating, setStep, t } = useProject()
 
   if (!parsedCv || !jobReq || !match) {
     return (
       <section className="view">
-        <h2>Analiza</h2>
-        <p className="muted">Najpierw dodaj CV i ofertę.</p>
+        <h2>{t("analysis.title")}</h2>
+        <p className="muted">{t("analysis.need_input")}</p>
         <button className="btn" onClick={() => setStep("input")}>
-          Wróć do wprowadzania
+          {t("analysis.back_to_input")}
         </button>
       </section>
     )
@@ -57,38 +65,51 @@ export function AnalysisView() {
     setStep("result")
   }
 
+  const matchedLabel = t("analysis.matches")
+  const gapsLabel = t("analysis.gaps")
+
   return (
     <section className="view">
-      <h2>Analiza dopasowania</h2>
+      <h2>{t("analysis.title")}</h2>
 
       <div className="score">
         <div className="score__bar">
           <div className="score__fill" style={{ width: `${pct}%` }} />
         </div>
-        <strong>{pct}%</strong> dopasowania (ważone: twarde kompetencje liczą się podwójnie)
+        <strong>{pct}%</strong> {t("analysis.match_suffix")}
       </div>
 
-      <Breakdown title="🔧 Twarde kompetencje" matched={hard.matched} missing={hard.missing} />
+      <Breakdown
+        title={t("analysis.hard_title")}
+        matchedLabel={matchedLabel}
+        gapsLabel={gapsLabel}
+        matched={hard.matched}
+        missing={hard.missing}
+      />
 
       {hasSoft && (
-        <Breakdown title="🤝 Miękkie kompetencje" matched={soft.matched} missing={soft.missing} />
+        <Breakdown
+          title={t("analysis.soft_title")}
+          matchedLabel={matchedLabel}
+          gapsLabel={gapsLabel}
+          matched={soft.matched}
+          missing={soft.missing}
+        />
       )}
 
       <div className="panel">
-        <h3>Wykryte sekcje CV</h3>
+        <h3>{t("analysis.detected_sections")}</h3>
         <Chips items={parsedCv.sections.map((s) => s.title)} tone="ok" />
       </div>
 
-      <p className="muted small">
-        Braki dodawaj tylko jeśli faktycznie masz takie doświadczenie.
-      </p>
+      <p className="muted small">{t("analysis.gaps_note")}</p>
 
       <div className="actions">
         <button className="btn" onClick={() => setStep("input")}>
-          Wstecz
+          {t("common.back")}
         </button>
         <button className="btn btn--primary" onClick={onGenerate} disabled={generating}>
-          {generating ? "Generuję..." : "Generuj dopasowane CV"}
+          {generating ? t("common.generating") : t("analysis.generate")}
         </button>
       </div>
     </section>

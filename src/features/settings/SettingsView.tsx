@@ -1,9 +1,10 @@
 import { useState } from "react"
 import { useProject } from "@/state/useProject"
 import { type AiConfig, PROVIDER_PRESETS, findPreset } from "@/lib/ai/config"
+import { LANGS } from "@/lib/i18n/translations"
 
 export function SettingsView() {
-  const { aiConfig, updateAiConfig, setStep } = useProject()
+  const { aiConfig, updateAiConfig, setStep, t, lang, setLang } = useProject()
   const [draft, setDraft] = useState<AiConfig>(aiConfig)
   const [saved, setSaved] = useState(false)
 
@@ -30,14 +31,22 @@ export function SettingsView() {
 
   return (
     <section className="view">
-      <h2>Ustawienia AI (BYOK)</h2>
-      <p className="muted">
-        Klucz API i konfiguracja są zapisywane lokalnie w przeglądarce. Pole z kluczem możesz zostawić
-        puste — aplikacja zadziała wtedy w trybie offline (heurystyka bez modelu).
-      </p>
+      <h2>{t("settings.title")}</h2>
+      <p className="muted">{t("settings.intro")}</p>
 
       <div className="field">
-        <label>Dostawca</label>
+        <label>{t("settings.language")}</label>
+        <select value={lang} onChange={(e) => setLang(e.target.value as typeof lang)}>
+          {LANGS.map((l) => (
+            <option key={l.id} value={l.id}>
+              {l.label}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="field">
+        <label>{t("settings.provider")}</label>
         <select value={draft.provider ?? "custom"} onChange={(e) => onProvider(e.target.value)}>
           {PROVIDER_PRESETS.map((p) => (
             <option key={p.id} value={p.id}>
@@ -48,39 +57,37 @@ export function SettingsView() {
       </div>
 
       <div className="field">
-        <label>Endpoint (OpenAI-compatible)</label>
+        <label>{t("settings.endpoint")}</label>
         <input
           value={draft.baseUrl}
           onChange={(e) => set({ baseUrl: e.target.value })}
           disabled={!isCustom}
           placeholder="https://..."
         />
-        {!isCustom && (
-          <span className="file-status">Ustawiane automatycznie przez wybranego dostawcę.</span>
-        )}
+        {!isCustom && <span className="file-status">{t("settings.endpoint_auto")}</span>}
       </div>
       <div className="field">
-        <label>Model</label>
+        <label>{t("settings.model")}</label>
         <input value={draft.model} onChange={(e) => set({ model: e.target.value })} />
       </div>
       <div className="field">
-        <label>Klucz API</label>
+        <label>{t("settings.api_key")}</label>
         <input
           type="password"
           value={draft.apiKey}
           onChange={(e) => set({ apiKey: e.target.value })}
-          placeholder="sk-... (zostaje lokalnie)"
+          placeholder={t("settings.api_key_ph")}
         />
       </div>
 
       <div className="actions">
         <button className="btn" onClick={() => setStep("start")}>
-          Wstecz
+          {t("common.back")}
         </button>
         <button className="btn btn--primary" onClick={save}>
-          Zapisz
+          {t("common.save")}
         </button>
-        {saved && <span className="muted">Zapisano ✓</span>}
+        {saved && <span className="muted">{t("common.saved")}</span>}
       </div>
     </section>
   )

@@ -1,14 +1,14 @@
 import { useProject, type Step } from "@/state/useProject"
 
-const STEPS: { id: Step; label: string }[] = [
-  { id: "start", label: "1. Start" },
-  { id: "input", label: "2. CV i oferta" },
-  { id: "analysis", label: "3. Analiza" },
-  { id: "result", label: "4. Wynik" },
+const STEPS: { id: Step; key: string }[] = [
+  { id: "start", key: "step.start" },
+  { id: "input", key: "step.input" },
+  { id: "analysis", key: "step.analysis" },
+  { id: "result", key: "step.result" },
 ]
 
 export function Stepper() {
-  const { step, setStep } = useProject()
+  const { step, setStep, t } = useProject()
   return (
     <nav className="stepper">
       {STEPS.map((s) => (
@@ -17,7 +17,7 @@ export function Stepper() {
           className={`stepper__item ${step === s.id ? "is-active" : ""}`}
           onClick={() => setStep(s.id)}
         >
-          {s.label}
+          {t(s.key)}
         </button>
       ))}
     </nav>

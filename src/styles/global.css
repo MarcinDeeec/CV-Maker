@@ -124,3 +124,24 @@ input:disabled, select:disabled { opacity: .6; cursor: not-allowed; }
 .tag--cv { background: rgba(46,204,113,.2); color: var(--ok); }
 
 .alert { background: rgba(255,176,32,.12); border: 1px solid rgba(255,176,32,.4); color: var(--miss); padding: 10px 12px; border-radius: 8px; margin-bottom: 12px; font-size: 14px; }
+
+/* v0.7: przełącznik języka w nagłówku */
+.lang-switch {
+  display: inline-flex;
+  border: 1px solid var(--border, #d0d0d8);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.lang-switch__item {
+  border: none;
+  background: transparent;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--muted, #6b6b76);
+}
+.lang-switch__item.is-active {
+  background: var(--accent, #2d6cdf);
+  color: #fff;
+}

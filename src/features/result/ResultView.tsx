@@ -15,6 +15,7 @@ export function ResultView() {
     saveCurrentVersion,
     loadVersionIntoEditor,
     deleteVersion,
+    t,
   } = useProject()
   const [openEvidence, setOpenEvidence] = useState<string | null>(null)
   const [versionName, setVersionName] = useState("")
@@ -23,10 +24,10 @@ export function ResultView() {
   if (!tailored) {
     return (
       <section className="view">
-        <h2>Dopasowane CV</h2>
-        <p className="muted">Najpierw wygeneruj CV w kroku analizy.</p>
+        <h2>{t("result.title")}</h2>
+        <p className="muted">{t("result.no_result")}</p>
         <button className="btn" onClick={() => setStep("analysis")}>
-          Przejdź do analizy
+          {t("result.go_analysis")}
         </button>
       </section>
     )
@@ -36,13 +37,13 @@ export function ResultView() {
 
   return (
     <section className="view">
-      <h2>Dopasowane CV</h2>
+      <h2>{t("result.title")}</h2>
       {error && <div className="alert">{error}</div>}
 
       <div className="grid-2">
         <div className="field">
           <div className="field__head">
-            <label>Podgląd (możesz edytować ręcznie)</label>
+            <label>{t("result.preview_label")}</label>
           </div>
           <textarea
             value={tailored.markdown}
@@ -52,12 +53,8 @@ export function ResultView() {
         </div>
 
         <div className="panel">
-          <h3>Sugestie · review-first</h3>
-          {aiLocked && (
-            <p className="muted small">
-              Treść pochodzi z modelu AI — przełączniki są nieaktywne. Edytuj tekst ręcznie po lewej.
-            </p>
-          )}
+          <h3>{t("result.suggestions_title")}</h3>
+          {aiLocked && <p className="muted small">{t("result.ai_locked")}</p>}
           <ul className="suggestions">
             {tailored.suggestions.map((s) => (
               <li key={s.id} className="suggestion">
@@ -81,8 +78,10 @@ export function ResultView() {
                       onClick={() => setOpenEvidence(openEvidence === s.id ? null : s.id)}
                     >
                       {openEvidence === s.id
-                        ? "Ukryj źródło"
-                        : `Pokaż źródło (${s.evidence.origin === "cv" ? "z CV" : "z oferty"})`}
+                        ? t("result.hide_source")
+                        : `${t("result.show_source")} (${
+                            s.evidence.origin === "cv" ? t("result.from_cv") : t("result.from_job")
+                          })`}
                     </button>
                     {openEvidence === s.id && (
                       <blockquote className="evidence">
@@ -100,10 +99,12 @@ export function ResultView() {
       </div>
 
       <div className="panel">
-        <h3>Zapisane wersje ({versions.length})</h3>
+        <h3>
+          {t("result.saved_versions")} ({versions.length})
+        </h3>
         <div className="version-save">
           <input
-            placeholder="Nazwa wersji (np. Frontend React)"
+            placeholder={t("result.version_name_ph")}
             value={versionName}
             onChange={(e) => setVersionName(e.target.value)}
           />
@@ -114,11 +115,11 @@ export function ResultView() {
               setVersionName("")
             }}
           >
-            Zapisz wersję
+            {t("result.save_version")}
           </button>
         </div>
         {versions.length === 0 ? (
-          <p className="muted small">Brak zapisanych wersji.</p>
+          <p className="muted small">{t("result.no_versions")}</p>
         ) : (
           <ul className="versions">
             {versions.map((v) => (
@@ -131,10 +132,10 @@ export function ResultView() {
                 </span>
                 <span className="version__actions">
                   <button className="btn btn--sm" onClick={() => loadVersionIntoEditor(v.id)}>
-                    Wczytaj
+                    {t("common.load")}
                   </button>
                   <button className="btn btn--sm" onClick={() => deleteVersion(v.id)}>
-                    Usuń
+                    {t("common.delete")}
                   </button>
                 </span>
               </li>
@@ -145,17 +146,17 @@ export function ResultView() {
 
       <div className="actions">
         <button className="btn" onClick={() => setStep("analysis")}>
-          Wstecz
+          {t("common.back")}
         </button>
         <button
           className="btn"
           disabled={generating}
           onClick={() => downloadMarkdown("cv-dopasowane.md", tailored.markdown)}
         >
-          Eksport Markdown
+          {t("result.export_md")}
         </button>
         <span className="inline-field">
-          <label className="small">Layout PDF:</label>
+          <label className="small">{t("result.pdf_layout")}</label>
           <select value={pdfLayout} onChange={(e) => setPdfLayout(e.target.value as PdfLayout)}>
             {PDF_LAYOUTS.map((l) => (
               <option key={l.id} value={l.id}>
@@ -165,11 +166,14 @@ export function ResultView() {
           </select>
         </span>
         <button
-          className="btn btn--primary"
+          className="btn"
           disabled={generating}
           onClick={() => exportPdf(tailored.markdown, pdfLayout)}
         >
-          Eksport PDF
+          {t("result.export_pdf")}
+        </button>
+        <button className="btn btn--primary" onClick={() => setStep("cover")}>
+          {t("result.cover_btn")}
         </button>
       </div>
     </section>

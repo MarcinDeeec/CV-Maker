@@ -5,6 +5,7 @@ import { InputView } from "@/features/input/InputView"
 import { AnalysisView } from "@/features/analysis/AnalysisView"
 import { ResultView } from "@/features/result/ResultView"
 import { SettingsView } from "@/features/settings/SettingsView"
+import { CoverLetterView } from "@/features/cover/CoverLetterView"
 
 function CurrentView() {
   const { step } = useProject()
@@ -17,6 +18,8 @@ function CurrentView() {
       return <AnalysisView />
     case "result":
       return <ResultView />
+    case "cover":
+      return <CoverLetterView />
     case "settings":
       return <SettingsView />
     default:

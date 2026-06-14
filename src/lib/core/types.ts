@@ -82,6 +82,15 @@ export interface SavedVersion {
   createdAt: string
 }
 
+/** Zapisany projekt (CV + oferta) — wersjonowanie całego projektu. */
+export interface ProjectSnapshot {
+  id: string
+  name: string
+  cvText: string
+  jobText: string
+  createdAt: string
+}
+
 export interface StoredProject {
   cvText: string
   jobText: string

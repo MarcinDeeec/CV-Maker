@@ -1,0 +1,229 @@
+// Prosty system i18n bez zależności: dwa słowniki + funkcja translate().
+// Język trzymany jest w localStorage i w stanie aplikacji (useProject).
+
+export type Lang = "pl" | "en"
+
+export const LANGS: { id: Lang; label: string }[] = [
+  { id: "pl", label: "PL" },
+  { id: "en", label: "EN" },
+]
+
+type Dict = Record<string, string>
+
+const pl: Dict = {
+  "common.settings": "Ustawienia",
+  "common.back": "Wstecz",
+  "common.save": "Zapisz",
+  "common.saved": "Zapisano ✓",
+  "common.load": "Wczytaj",
+  "common.delete": "Usuń",
+  "common.generate": "Generuj",
+  "common.generating": "Generuję…",
+
+  "header.ai_on": "AI: włączone",
+  "header.ai_off": "AI: tryb offline",
+  "header.footer": "Dane zostają lokalnie w Twojej przeglądarce · BYOK",
+
+  "step.start": "1. Start",
+  "step.input": "2. CV i oferta",
+  "step.analysis": "3. Analiza",
+  "step.result": "4. Wynik",
+
+  "start.title": "Dopasuj swoje CV do oferty",
+  "start.intro":
+    "Local-first narzędzie, które pomaga uczciwie dopasować CV do konkretnej oferty. Nie wymyśla doświadczenia — podkreśla to, co naprawdę masz.",
+  "start.card_privacy_t": "🔒 Prywatność",
+  "start.card_privacy_d": "Twoje CV i ustawienia zostają lokalnie w przeglądarce.",
+  "start.card_byok_t": "🔑 BYOK",
+  "start.card_byok_d": "Używasz własnego klucza API lub lokalnego modelu. Bez AI też działa.",
+  "start.card_honest_t": "✅ Uczciwie",
+  "start.card_honest_d": "Pokazujemy braki jako sugestie, a nie zmyślone kompetencje.",
+  "start.continue": "Kontynuuj projekt",
+  "start.new": "Nowe dopasowanie",
+  "start.load_example": "Wczytaj przykład",
+  "start.saved_projects": "Zapisane projekty",
+  "start.project_name_ph": "Nazwa projektu (np. Frontend X)",
+  "start.save_project": "Zapisz projekt",
+  "start.no_projects": "Brak zapisanych projektów.",
+  "start.open": "Otwórz",
+
+  "input.title": "CV i oferta",
+  "input.intro": "Wklej treść lub wczytaj plik. Obsługiwane formaty CV: .txt, .md, .docx.",
+  "input.cv_label": "Twoje CV",
+  "input.load_btn": "Wczytaj .txt / .md / .docx",
+  "input.loading": "Wczytywanie…",
+  "input.cv_ph": "Wklej tutaj swoje obecne CV...",
+  "input.job_label": "Oferta pracy",
+  "input.job_ph": "Wklej tutaj treść oferty pracy...",
+  "input.analyze": "Analizuj",
+  "input.file_loaded": "Wczytano: ",
+
+  "analysis.title": "Analiza dopasowania",
+  "analysis.need_input": "Najpierw dodaj CV i ofertę.",
+  "analysis.back_to_input": "Wróć do wprowadzania",
+  "analysis.match_suffix": "dopasowania (ważone: twarde kompetencje liczą się podwójnie)",
+  "analysis.hard_title": "🔧 Twarde kompetencje",
+  "analysis.soft_title": "🤝 Miękkie kompetencje",
+  "analysis.matches": "Pasuje",
+  "analysis.gaps": "Braki",
+  "analysis.detected_sections": "Wykryte sekcje CV",
+  "analysis.gaps_note": "Braki dodawaj tylko jeśli faktycznie masz takie doświadczenie.",
+  "analysis.generate": "Generuj dopasowane CV",
+
+  "result.title": "Dopasowane CV",
+  "result.no_result": "Najpierw wygeneruj CV w kroku analizy.",
+  "result.go_analysis": "Przejdź do analizy",
+  "result.preview_label": "Podgląd (możesz edytować ręcznie)",
+  "result.suggestions_title": "Sugestie · review-first",
+  "result.ai_locked":
+    "Treść pochodzi z modelu AI — przełączniki są nieaktywne. Edytuj tekst ręcznie po lewej.",
+  "result.show_source": "Pokaż źródło",
+  "result.hide_source": "Ukryj źródło",
+  "result.from_cv": "z CV",
+  "result.from_job": "z oferty",
+  "result.saved_versions": "Zapisane wersje",
+  "result.version_name_ph": "Nazwa wersji (np. Frontend React)",
+  "result.save_version": "Zapisz wersję",
+  "result.no_versions": "Brak zapisanych wersji.",
+  "result.export_md": "Eksport Markdown",
+  "result.pdf_layout": "Layout PDF:",
+  "result.export_pdf": "Eksport PDF",
+  "result.cover_btn": "List motywacyjny",
+
+  "settings.title": "Ustawienia AI (BYOK)",
+  "settings.intro":
+    "Klucz API i konfiguracja są zapisywane lokalnie w przeglądarce. Pole z kluczem możesz zostawić puste — aplikacja zadziała w trybie offline (heurystyka bez modelu).",
+  "settings.provider": "Dostawca",
+  "settings.endpoint": "Endpoint (OpenAI-compatible)",
+  "settings.endpoint_auto": "Ustawiane automatycznie przez wybranego dostawcę.",
+  "settings.model": "Model",
+  "settings.api_key": "Klucz API",
+  "settings.api_key_ph": "sk-... (zostaje lokalnie)",
+  "settings.language": "Język interfejsu",
+
+  "cover.title": "List motywacyjny",
+  "cover.intro":
+    "Krótki list oparty wyłącznie na Twoich realnych kompetencjach dopasowanych do oferty. Możesz go edytować.",
+  "cover.need_input": "Najpierw dodaj CV i ofertę.",
+  "cover.tone": "Ton",
+  "cover.tone_professional": "Profesjonalny",
+  "cover.tone_friendly": "Przyjazny",
+  "cover.tone_concise": "Zwięzły",
+  "cover.generate": "Generuj list",
+  "cover.regenerate": "Generuj ponownie",
+  "cover.export_md": "Eksport Markdown",
+  "cover.empty": "Wygeneruj list, korzystając z przycisku powyżej.",
+  "cover.back_to_result": "Wróć do CV",
+}
+
+const en: Dict = {
+  "common.settings": "Settings",
+  "common.back": "Back",
+  "common.save": "Save",
+  "common.saved": "Saved ✓",
+  "common.load": "Load",
+  "common.delete": "Delete",
+  "common.generate": "Generate",
+  "common.generating": "Generating…",
+
+  "header.ai_on": "AI: on",
+  "header.ai_off": "AI: offline mode",
+  "header.footer": "Your data stays locally in your browser · BYOK",
+
+  "step.start": "1. Start",
+  "step.input": "2. CV & job",
+  "step.analysis": "3. Analysis",
+  "step.result": "4. Result",
+
+  "start.title": "Tailor your CV to the job",
+  "start.intro":
+    "A local-first tool that helps you honestly tailor your CV to a specific job. It does not invent experience — it highlights what you actually have.",
+  "start.card_privacy_t": "🔒 Privacy",
+  "start.card_privacy_d": "Your CV and settings stay locally in your browser.",
+  "start.card_byok_t": "🔑 BYOK",
+  "start.card_byok_d": "Use your own API key or a local model. Works without AI too.",
+  "start.card_honest_t": "✅ Honest",
+  "start.card_honest_d": "We show gaps as suggestions, not invented skills.",
+  "start.continue": "Continue project",
+  "start.new": "New tailoring",
+  "start.load_example": "Load example",
+  "start.saved_projects": "Saved projects",
+  "start.project_name_ph": "Project name (e.g. Frontend X)",
+  "start.save_project": "Save project",
+  "start.no_projects": "No saved projects.",
+  "start.open": "Open",
+
+  "input.title": "CV & job offer",
+  "input.intro": "Paste text or load a file. Supported CV formats: .txt, .md, .docx.",
+  "input.cv_label": "Your CV",
+  "input.load_btn": "Load .txt / .md / .docx",
+  "input.loading": "Loading…",
+  "input.cv_ph": "Paste your current CV here...",
+  "input.job_label": "Job offer",
+  "input.job_ph": "Paste the job offer text here...",
+  "input.analyze": "Analyze",
+  "input.file_loaded": "Loaded: ",
+
+  "analysis.title": "Match analysis",
+  "analysis.need_input": "Add your CV and the job offer first.",
+  "analysis.back_to_input": "Back to input",
+  "analysis.match_suffix": "match (weighted: hard skills count double)",
+  "analysis.hard_title": "🔧 Hard skills",
+  "analysis.soft_title": "🤝 Soft skills",
+  "analysis.matches": "Matches",
+  "analysis.gaps": "Gaps",
+  "analysis.detected_sections": "Detected CV sections",
+  "analysis.gaps_note": "Only add gaps if you genuinely have that experience.",
+  "analysis.generate": "Generate tailored CV",
+
+  "result.title": "Tailored CV",
+  "result.no_result": "Generate the CV in the analysis step first.",
+  "result.go_analysis": "Go to analysis",
+  "result.preview_label": "Preview (you can edit manually)",
+  "result.suggestions_title": "Suggestions · review-first",
+  "result.ai_locked":
+    "Content comes from the AI model — toggles are disabled. Edit the text manually on the left.",
+  "result.show_source": "Show source",
+  "result.hide_source": "Hide source",
+  "result.from_cv": "from CV",
+  "result.from_job": "from job",
+  "result.saved_versions": "Saved versions",
+  "result.version_name_ph": "Version name (e.g. Frontend React)",
+  "result.save_version": "Save version",
+  "result.no_versions": "No saved versions.",
+  "result.export_md": "Export Markdown",
+  "result.pdf_layout": "PDF layout:",
+  "result.export_pdf": "Export PDF",
+  "result.cover_btn": "Cover letter",
+
+  "settings.title": "AI settings (BYOK)",
+  "settings.intro":
+    "Your API key and config are stored locally in the browser. Leave the key empty to run in offline mode (heuristic, no model).",
+  "settings.provider": "Provider",
+  "settings.endpoint": "Endpoint (OpenAI-compatible)",
+  "settings.endpoint_auto": "Set automatically by the chosen provider.",
+  "settings.model": "Model",
+  "settings.api_key": "API key",
+  "settings.api_key_ph": "sk-... (stays local)",
+  "settings.language": "Interface language",
+
+  "cover.title": "Cover letter",
+  "cover.intro":
+    "A short letter based only on your real skills matched to the job. You can edit it.",
+  "cover.need_input": "Add your CV and the job offer first.",
+  "cover.tone": "Tone",
+  "cover.tone_professional": "Professional",
+  "cover.tone_friendly": "Friendly",
+  "cover.tone_concise": "Concise",
+  "cover.generate": "Generate letter",
+  "cover.regenerate": "Regenerate",
+  "cover.export_md": "Export Markdown",
+  "cover.empty": "Generate a letter using the button above.",
+  "cover.back_to_result": "Back to CV",
+}
+
+export const TRANSLATIONS: Record<Lang, Dict> = { pl, en }
+
+export function translate(lang: Lang, key: string): string {
+  return TRANSLATIONS[lang]?.[key] ?? TRANSLATIONS.pl[key] ?? key
+}

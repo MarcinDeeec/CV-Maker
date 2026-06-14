@@ -26,12 +26,12 @@
 - ✅ obsługa wielu providerów OpenAI-compatible (presety: OpenAI, Groq, OpenRouter, Together, Mistral, LocalAI)
 - ✅ lepszy UX i czytelne komunikaty błędów (walidacja pliku, mapowanie błędów HTTP)
 
-## v0.7 — wersja półstabilna
-- PL/EN w interfejsie
-- lepsza jakość promptów
-- wersjonowanie projektu
-- opcjonalny tryb listu motywacyjnego
-- testy jednostkowe rdzenia
+## v0.7 — wersja półstabilna  ✅
+- ✅ PL/EN w interfejsie (i18n bezzależnościowy, przełącznik w nagłówku i ustawieniach, zapis wyboru lokalnie)
+- ✅ lepsza jakość promptów (struktura, zakaz fabrykowania faktów, zachowanie języka CV)
+- ✅ wersjonowanie projektu (zapis/otwarcie/usuwanie całych projektów CV+oferta)
+- ✅ opcjonalny tryb listu motywacyjnego (heurystyka offline + wariant AI, 3 tony, eksport MD)
+- ✅ testy jednostkowe rdzenia (wbudowany runner Node, `npm test`, 13 testów)
 
 ## v1.0 — release stabilny
 - dopracowany lokalny workspace

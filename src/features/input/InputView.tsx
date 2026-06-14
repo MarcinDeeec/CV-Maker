@@ -3,7 +3,7 @@ import { useProject } from "@/state/useProject"
 import { readDocxFile } from "@/lib/import/docx"
 
 export function InputView() {
-  const { cvText, setCvText, jobText, setJobText, setStep } = useProject()
+  const { cvText, setCvText, jobText, setJobText, setStep, t } = useProject()
   const fileRef = useRef<HTMLInputElement>(null)
   const [loading, setLoading] = useState(false)
   const [fileError, setFileError] = useState<string | null>(null)
@@ -40,21 +40,19 @@ export function InputView() {
 
   return (
     <section className="view">
-      <h2>CV i oferta</h2>
-      <p className="muted">
-        Wklej treść lub wczytaj plik. Obsługiwane formaty CV: <strong>.txt, .md, .docx</strong>.
-      </p>
+      <h2>{t("input.title")}</h2>
+      <p className="muted">{t("input.intro")}</p>
 
       <div className="grid-2">
         <div className="field">
           <div className="field__head">
-            <label>Twoje CV</label>
+            <label>{t("input.cv_label")}</label>
             <button
               className="btn btn--ghost btn--sm"
               disabled={loading}
               onClick={() => fileRef.current?.click()}
             >
-              {loading ? "Wczytywanie…" : "Wczytaj .txt / .md / .docx"}
+              {loading ? t("input.loading") : t("input.load_btn")}
             </button>
             <input
               ref={fileRef}
@@ -66,24 +64,27 @@ export function InputView() {
           </div>
           {fileError && <div className="alert">{fileError}</div>}
           {loadedName && !fileError && (
-            <p className="file-status">Wczytano: {loadedName}</p>
+            <p className="file-status">
+              {t("input.file_loaded")}
+              {loadedName}
+            </p>
           )}
           <textarea
             value={cvText}
             onChange={(e) => setCvText(e.target.value)}
-            placeholder="Wklej tutaj swoje obecne CV..."
+            placeholder={t("input.cv_ph")}
             rows={18}
           />
         </div>
 
         <div className="field">
           <div className="field__head">
-            <label>Oferta pracy</label>
+            <label>{t("input.job_label")}</label>
           </div>
           <textarea
             value={jobText}
             onChange={(e) => setJobText(e.target.value)}
-            placeholder="Wklej tutaj treść oferty pracy..."
+            placeholder={t("input.job_ph")}
             rows={18}
           />
         </div>
@@ -91,14 +92,14 @@ export function InputView() {
 
       <div className="actions">
         <button className="btn" onClick={() => setStep("start")}>
-          Wstecz
+          {t("common.back")}
         </button>
         <button
           className="btn btn--primary"
           disabled={!canContinue}
           onClick={() => setStep("analysis")}
         >
-          Analizuj
+          {t("input.analyze")}
         </button>
       </div>
     </section>
