@@ -1,6 +1,6 @@
 # Roadmap
 
-## v0.1 — działający proof of concept  ✅ (ten etap)
+## v0.1 — działający proof of concept  ✅
 - import CV, wklejenie oferty
 - podstawowy parser tekstu
 - proste dopasowanie
@@ -8,11 +8,12 @@
 - lokalny zapis
 - eksport do Markdown
 
-## v0.2 — lepsza analiza
-- dokładniejszy parser sekcji CV
-- scoring dopasowania (wagi twarde vs miękkie)
-- konfiguracja API key w ustawieniach (jest już w v0.1)
-- eksport do PDF
+## v0.2 — lepsza analiza  ✅
+- ✅ dokładniejszy parser sekcji CV (nagłówki markdown, ALL CAPS, dwukropek, sekcje "other")
+- ✅ scoring dopasowania z wagami (twarde vs miękkie kompetencje)
+- ✅ konfiguracja API key w ustawieniach
+- ✅ eksport do PDF (przez druk przeglądarki, bez zależności)
+- ✅ README po angielsku (+ README.pl.md)
 
 ## v0.3 — tryb review-first
 - akceptowanie / odrzucanie pojedynczych sugestii
@@ -21,12 +22,12 @@
 
 ## v0.5 — pierwszy wygodny release
 - import DOCX
-- kilka layoutów eksportu
+- kilka layoutów eksportu PDF
 - obsługa wielu providerów OpenAI-compatible
 - lepszy UX i komunikaty błędów
 
 ## v0.7 — wersja półstabilna
-- PL/EN
+- PL/EN w interfejsie
 - lepsza jakość promptów
 - wersjonowanie projektu
 - opcjonalny tryb listu motywacyjnego

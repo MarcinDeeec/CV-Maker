@@ -30,11 +30,20 @@ export interface JobRequirements {
   keywords: string[]
 }
 
+export interface MatchBreakdown {
+  matched: string[]
+  missing: string[]
+}
+
 export interface MatchResult {
-  /** Wynik dopasowania w zakresie 0..1 */
+  /** Ważony wynik dopasowania w zakresie 0..1 (twarde kompetencje ważą więcej). */
   score: number
   matched: string[]
   missing: string[]
+  breakdown: {
+    hard: MatchBreakdown
+    soft: MatchBreakdown
+  }
 }
 
 export type ChangeSource = "cv" | "job" | "ai"

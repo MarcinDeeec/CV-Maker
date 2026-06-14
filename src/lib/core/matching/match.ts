@@ -1,9 +1,13 @@
 import type { ParsedCv, JobRequirements, MatchResult } from "../types"
 import { normalize, unique } from "../keywords"
 
+// Twarde kompetencje ważą więcej niż miękkie — to one zwykle decydują o przejściu selekcji.
+const HARD_WEIGHT = 2
+const SOFT_WEIGHT = 1
+
 /**
- * Proste dopasowanie: porównuje wymagania oferty (twarde + słowa kluczowe)
- * z umiejętnościami i słowami kluczowymi z CV.
+ * Ważone dopasowanie: porównuje wymagania oferty z CV i liczy osobno
+ * twarde i miękkie kompetencje. Wynik to udział trafionej "wagi".
  */
 export function matchCvToJob(cv: ParsedCv, job: JobRequirements): MatchResult {
   const cvTerms = unique([
@@ -12,21 +16,33 @@ export function matchCvToJob(cv: ParsedCv, job: JobRequirements): MatchResult {
   ])
   const cvSet = new Set(cvTerms)
 
-  // Cel dopasowania = konkretne wymagania oferty (twarde + miękkie),
-  // a nie wszystkie wyrazy — to ogranicza szum w wynikach.
-  const targets = unique([...job.hardSkills, ...job.softSkills].map(normalize))
-
   const has = (term: string): boolean => {
-    if (cvSet.has(term)) return true
-    // ostrożne częściowe dopasowanie (np. "react" vs "react.js")
+    const t = normalize(term)
+    if (cvSet.has(t)) return true
     return cvTerms.some(
-      (c) => c.length >= 4 && term.length >= 4 && (c.includes(term) || term.includes(c)),
+      (c) => c.length >= 4 && t.length >= 4 && (c.includes(t) || t.includes(c)),
     )
   }
 
-  const matched = unique(targets.filter(has))
-  const missing = unique(targets.filter((t) => !matched.includes(t)))
-  const score = targets.length > 0 ? matched.length / targets.length : 0
+  const hardTargets = unique(job.hardSkills.map(normalize))
+  const softTargets = unique(job.softSkills.map(normalize))
 
-  return { score, matched, missing }
+  const hardMatched = hardTargets.filter(has)
+  const hardMissing = hardTargets.filter((t) => !hardMatched.includes(t))
+  const softMatched = softTargets.filter(has)
+  const softMissing = softTargets.filter((t) => !softMatched.includes(t))
+
+  const totalWeight = hardTargets.length * HARD_WEIGHT + softTargets.length * SOFT_WEIGHT
+  const matchedWeight = hardMatched.length * HARD_WEIGHT + softMatched.length * SOFT_WEIGHT
+  const score = totalWeight > 0 ? matchedWeight / totalWeight : 0
+
+  return {
+    score,
+    matched: unique([...hardMatched, ...softMatched]),
+    missing: unique([...hardMissing, ...softMissing]),
+    breakdown: {
+      hard: { matched: hardMatched, missing: hardMissing },
+      soft: { matched: softMatched, missing: softMissing },
+    },
+  }
 }

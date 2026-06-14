@@ -1,62 +1,65 @@
 # CV Tailor (local-first)
 
-Local-first, privacy-first aplikacja do **uczciwego** dopasowywania CV pod konkretne oferty pracy.
-Nie wymyśla doświadczenia — podkreśla to, co naprawdę masz, i pokazuje braki jako sugestie.
+[Polski / Polish version → `README.pl.md`](README.pl.md)
 
-> Etap: **v0.1 (proof of concept)** — pełny przepływ end-to-end: import CV → oferta → analiza → dopasowane CV → eksport do Markdown. Dane i klucz API zostają lokalnie.
+Local-first, privacy-first app for **honestly** tailoring your CV to specific job offers.
+It does not invent experience — it highlights what you actually have and shows gaps as suggestions.
 
-## Co potrafi v0.1
+> Stage: **v0.2** — full end-to-end flow: import CV → job offer → analysis → tailored CV → export to Markdown / PDF. Your data and API key stay local.
 
-- Wklejenie / wczytanie CV (`.txt`, `.md`) i treści oferty pracy.
-- Podział CV na sekcje (podsumowanie, doświadczenie, umiejętności, edukacja).
-- Wyciągnięcie wymagań z oferty (twarde/miękkie kompetencje).
-- Proste dopasowanie + wynik procentowy, lista trafień i braków.
-- Wygenerowanie dopasowanej wersji CV (heurystyka offline lub model AI — BYOK).
-- Lokalny autozapis projektu i eksport do Markdown.
+## Features
 
-## Uruchomienie
+- Paste or load a CV (`.txt`, `.md`) and a job offer.
+- Split the CV into sections (summary, experience, skills, education, and detected custom sections).
+- Extract requirements from the offer (hard / soft skills).
+- **Weighted matching** with a percentage score (hard skills count double), plus matched / missing breakdown.
+- Generate a tailored CV (offline heuristic or AI model — BYOK).
+- Local autosave and export to **Markdown** or **PDF**.
+
+## Getting started
 
 ```bash
 npm install
 npm run dev
 ```
 
-Apka wystartuje na `http://localhost:5173`.
+The app starts on `http://localhost:5173`.
 
-Dodatkowe komendy:
+Other commands:
 
 ```bash
-npm run build      # produkcyjny build
-npm run typecheck  # sprawdzenie typów
-npm run smoke      # szybki test logiki rdzenia (bez UI)
+npm run build      # production build
+npm run typecheck  # type checking
+npm run smoke      # quick core-logic test (no UI)
 ```
 
 ## AI (BYOK — Bring Your Own Key)
 
-W zakładce **Ustawienia** podajesz:
-- endpoint zgodny z OpenAI API (np. `https://api.openai.com/v1` albo lokalny LocalAI),
-- model,
-- klucz API.
+In the **Settings** tab you provide:
 
-Klucz zapisywany jest tylko lokalnie (localStorage). **Bez klucza** aplikacja działa w trybie offline
-(heurystyczny generator bez modelu).
+- an OpenAI-compatible endpoint (e.g. `https://api.openai.com/v1` or a local LocalAI),
+- a model,
+- an API key.
 
-## Prywatność
+The key is stored locally (localStorage). **Without a key** the app runs in offline mode
+(heuristic generator, no model).
 
-- CV, oferta i ustawienia nie są wysyłane na żaden serwer aplikacji (nie ma backendu).
-- Jedyne zapytanie sieciowe to opcjonalne wywołanie wybranego przez Ciebie dostawcy AI.
+## Privacy
 
-## Architektura
+- Your CV, the offer and settings are not sent to any app server (there is no backend).
+- The only network request is the optional call to the AI provider you choose.
 
-Zobacz [`docs/architecture.md`](docs/architecture.md). Rdzeń (`src/lib/core`) jest niezależny od UI
-i przeglądarki — da się go testować i później przenieść do osobnego pakietu / sidecara.
+## Architecture
+
+See [`docs/architecture.md`](docs/architecture.md). The core (`src/lib/core`) is independent of the UI
+and the browser — it can be tested and later moved into a separate package / sidecar.
 
 ## Roadmap
 
-Zobacz [`docs/roadmap.md`](docs/roadmap.md). Kolejne etapy: lepszy parser, scoring, tryb review-first,
-import DOCX/PDF, PL/EN, a docelowo desktop (Tauri).
+See [`docs/roadmap.md`](docs/roadmap.md). Next steps: review-first mode, DOCX/PDF import, PL/EN UI,
+and eventually a desktop build (Tauri).
 
-## Czego v0.1 NIE robi
+## What v0.2 does NOT do (yet)
 
-Kont użytkowników, chmury, wielu szablonów, generatora listu motywacyjnego, statystyk ATS, importu PDF/DOCX.
-To świadome ograniczenie zakresu — najpierw działający, prosty pipeline.
+User accounts, cloud sync, multiple templates, cover-letter generator, ATS stats, DOCX/PDF import.
+This is a deliberate scope limit — a working, simple pipeline first.

@@ -33,9 +33,10 @@ export function generateTailoredCv(
   const summarySection = cv.sections.find((s) => s.id === "summary")
   const experienceSection = cv.sections.find((s) => s.id === "experience")
   const educationSection = cv.sections.find((s) => s.id === "education")
+  const otherSections = cv.sections.filter((s) => s.id === "other")
 
   const baseSummary = (summarySection?.content ?? "").trim()
-  const topMatches = match.matched.slice(0, 6)
+  const topMatches = match.breakdown.hard.matched.slice(0, 6)
   const matchPhrase = topMatches.length > 0 ? topMatches.join(", ") : "wymaganiami z oferty"
   const tailoredSummary = [
     baseSummary,
@@ -49,12 +50,13 @@ export function generateTailoredCv(
     description: "Podsumowanie podkreśla kompetencje wspólne z ofertą.",
   })
 
-  // 3. Braki względem oferty (tylko jako sugestia).
-  if (match.missing.length > 0) {
+  // 3. Braki twarde (najważniejsze) jako sugestia — bez wymyślania.
+  const hardMissing = match.breakdown.hard.missing
+  if (hardMissing.length > 0) {
     changes.push({
       type: "add",
       source: "job",
-      description: `Braki względem oferty: ${match.missing.slice(0, 8).join(", ")}. Dodaj TYLKO jeśli faktycznie masz to doświadczenie.`,
+      description: `Kluczowe braki (twarde): ${hardMissing.slice(0, 8).join(", ")}. Dodaj TYLKO jeśli faktycznie masz to doświadczenie.`,
     })
   }
 
@@ -64,6 +66,9 @@ export function generateTailoredCv(
   md += "## Podsumowanie\n" + tailoredSummary + "\n\n"
   if (experienceSection) md += "## Doświadczenie\n" + experienceSection.content.trim() + "\n\n"
   md += "## Umiejętności\n" + (skillsSorted.join(", ") || "—") + "\n\n"
+  for (const sec of otherSections) {
+    md += `## ${sec.title}\n` + sec.content.trim() + "\n\n"
+  }
   if (educationSection) md += "## Edukacja\n" + educationSection.content.trim() + "\n"
 
   return { markdown: md.trim() + "\n", changes, match }

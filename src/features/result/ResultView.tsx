@@ -1,5 +1,6 @@
 import { useProject } from "@/state/useProject"
 import { downloadMarkdown } from "@/lib/export/markdown"
+import { exportPdf } from "@/lib/export/pdf"
 
 export function ResultView() {
   const { tailored, setTailoredMarkdown, error, setStep, generating } = useProject()
@@ -49,11 +50,18 @@ export function ResultView() {
           Wstecz
         </button>
         <button
-          className="btn btn--primary"
+          className="btn"
           disabled={generating}
           onClick={() => downloadMarkdown("cv-dopasowane.md", tailored.markdown)}
         >
-          Eksportuj do Markdown
+          Eksport Markdown
+        </button>
+        <button
+          className="btn btn--primary"
+          disabled={generating}
+          onClick={() => exportPdf(tailored.markdown)}
+        >
+          Eksport PDF
         </button>
       </div>
     </section>

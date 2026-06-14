@@ -1,7 +1,7 @@
 import { useProject } from "@/state/useProject"
 
 function Chips({ items, tone }: { items: string[]; tone: "ok" | "miss" }) {
-  if (items.length === 0) return <p className="muted">—</p>
+  if (items.length === 0) return <p className="muted small">—</p>
   return (
     <div className="chips">
       {items.map((i) => (
@@ -9,6 +9,26 @@ function Chips({ items, tone }: { items: string[]; tone: "ok" | "miss" }) {
           {i}
         </span>
       ))}
+    </div>
+  )
+}
+
+function Breakdown({
+  title,
+  matched,
+  missing,
+}: {
+  title: string
+  matched: string[]
+  missing: string[]
+}) {
+  return (
+    <div className="panel">
+      <h3>{title}</h3>
+      <p className="muted small">Pasuje ({matched.length})</p>
+      <Chips items={matched} tone="ok" />
+      <p className="muted small label-gap">Braki ({missing.length})</p>
+      <Chips items={missing} tone="miss" />
     </div>
   )
 }
@@ -29,6 +49,8 @@ export function AnalysisView() {
   }
 
   const pct = Math.round(match.score * 100)
+  const { hard, soft } = match.breakdown
+  const hasSoft = soft.matched.length + soft.missing.length > 0
 
   const onGenerate = async () => {
     await generate()
@@ -43,27 +65,23 @@ export function AnalysisView() {
         <div className="score__bar">
           <div className="score__fill" style={{ width: `${pct}%` }} />
         </div>
-        <strong>{pct}%</strong> pokrycia wymagań oferty
+        <strong>{pct}%</strong> dopasowania (ważone: twarde kompetencje liczą się podwójnie)
       </div>
 
-      <div className="grid-2">
-        <div className="panel">
-          <h3>✅ Pasuje ({match.matched.length})</h3>
-          <Chips items={match.matched} tone="ok" />
-        </div>
-        <div className="panel">
-          <h3>⚠️ Braki ({match.missing.length})</h3>
-          <Chips items={match.missing} tone="miss" />
-          <p className="muted small">
-            Dodaj te elementy tylko jeśli faktycznie masz takie doświadczenie.
-          </p>
-        </div>
-      </div>
+      <Breakdown title="🔧 Twarde kompetencje" matched={hard.matched} missing={hard.missing} />
+
+      {hasSoft && (
+        <Breakdown title="🤝 Miękkie kompetencje" matched={soft.matched} missing={soft.missing} />
+      )}
 
       <div className="panel">
         <h3>Wykryte sekcje CV</h3>
         <Chips items={parsedCv.sections.map((s) => s.title)} tone="ok" />
       </div>
+
+      <p className="muted small">
+        Braki dodawaj tylko jeśli faktycznie masz takie doświadczenie.
+      </p>
 
       <div className="actions">
         <button className="btn" onClick={() => setStep("input")}>
