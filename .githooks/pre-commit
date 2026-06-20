@@ -1,0 +1,12 @@
+#!/bin/sh
+# Bramka jakości v1.1 — typy + testy rdzenia i widoków muszą przejść przed commitem.
+# Podpina się automatycznie przez skrypt "prepare" w package.json (git config core.hooksPath .githooks).
+set -e
+
+echo "▶ pre-commit: typecheck"
+npm run typecheck
+
+echo "▶ pre-commit: testy (rdzeń + widoki)"
+npm run test:all
+
+echo "✔ pre-commit OK"

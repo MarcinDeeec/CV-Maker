@@ -11,6 +11,11 @@
     "typecheck": "tsc --noEmit",
     "smoke": "tsx scripts/smoke.ts",
     "test": "tsx --test test/core.test.ts",
+    "test:view": "vitest run",
+    "test:view:watch": "vitest",
+    "test:view:cov": "vitest run --coverage",
+    "test:all": "npm run test && npm run test:view",
+    "prepare": "git config core.hooksPath .githooks",
     "tauri": "tauri",
     "tauri:dev": "tauri dev",
     "tauri:build": "tauri build"
@@ -20,12 +25,18 @@
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
+    "@tauri-apps/cli": "^2.0.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.1.0",
+    "@testing-library/user-event": "^14.5.2",
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",
-    "@tauri-apps/cli": "^2.0.0",
+    "@vitest/coverage-v8": "^2.1.8",
+    "jsdom": "^25.0.1",
     "tsx": "^4.19.0",
     "typescript": "^5.5.4",
-    "vite": "^5.4.2"
+    "vite": "^5.4.2",
+    "vitest": "^2.1.8"
   }
 }
